@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+
+	<!-- mysql DataSource -->
+	<!-- <bean
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		id="dataSource">
+		<property name="driverClassName"
+			value="com.mysql.cj.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://14.63.41.131:3306/to_do_list?characterEncoding=UTF-8&amp;serverTimezone=UTC" />
+		<property name="username" value="haedong" />
+		<property name="password" value="suk381547" />
+	</bean> -->
+
+	 <!-- MyBatis 설정을 위한 설정 -->
+	<!--<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+		<property name="dataSource" ref="dataSource" />
+		<property value="classpath:/mybatis/mybatis-config.xml"
+			name="configLocation" />
+		<property value="classpath:/mybatis/mappers/goods.xml"
+			name="mapperLocations" />
+	</bean> -->
+	
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+		<property name="dataSource" ref="dataSource" />
+		
+		<!-- 환경설정 파일 경로를 설정 -->
+		<property value="classpath:/mybatis/mybatis-config.xml"
+			name="configLocation" />
+		<!-- 매퍼 파일의 경로를 설정 -->
+		<property name="mapperLocations" value="mybatis/mappers/to_do_list.xml"/>
+		<property name="mapperLocations" value="mybatis/mapper/User.xml"/>
+	</bean>
+	
+	
+	<!-- MyBatis 사용 빈 -->
+	<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession" destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	
+
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="kr.co.plan.dao"></property>
+	</bean>
+	
+	<!-- 어노테이션 설정을 사용하도록 설정 -->
+	<context:annotation-config></context:annotation-config>
+	
+	<!-- 어노테이션이 붙은 클래스의 빈을 자동으로 생성하는 해키지 설정  -->
+	<context:component-scan base-package="kr.co.plan"></context:component-scan>
+
+</beans>
